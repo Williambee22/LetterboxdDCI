@@ -13,7 +13,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import db as dbx
-
+import shutil
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -28,9 +28,21 @@ PFP_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
 MAX_UPLOAD_MB = 5
 
-APP_SECRET = os.getenv("APP_SECRET", "dev-secret-change-me")
-DB_PATH = os.getenv("DC_SITE_DB", os.path.join(os.path.dirname(__file__), "site.db"))
+MOUNT = os.getenv("/LetterboxdDCI/site")
+VOLUME_DB = os.path.join(MOUNT, "site.db") if MOUNT else None
 
+# This is the db file that ships with your code (initial seed)
+SEED_DB = os.path.join(os.path.dirname(__file__), "site.db")
+
+if MOUNT:
+    os.makedirs(MOUNT, exist_ok=True)
+
+    # first boot only: copy seed db into the volume
+    if (not os.path.exists(VOLUME_DB)) and os.path.exists(SEED_DB):
+        shutil.copyfile(SEED_DB, VOLUME_DB)
+
+DB_PATH = VOLUME_DB if MOUNT else SEED_DB
+    
 import os, re
 from flask import url_for
 
@@ -1167,3 +1179,4 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
 
     app.run(host="0.0.0.0", port=port, debug=True)
+
