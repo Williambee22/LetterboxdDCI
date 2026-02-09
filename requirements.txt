@@ -1,5 +1,6 @@
 Flask==3.0.3
 gunicorn==20.1.0
 setuptools>=68
-gunicorn>=21
+
+
 
