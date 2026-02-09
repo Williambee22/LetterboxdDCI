@@ -28,8 +28,8 @@ PFP_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
 MAX_UPLOAD_MB = 5
 
-MOUNT = os.getenv("site.sql")
-VOLUME_DB = os.path.join(MOUNT, "site.sql") if MOUNT else None
+APP_SECRET = os.getenv("APP_SECRET", "dev-secret-change-me")
+DB_PATH = os.getenv("DC_SITE_DB", os.path.join(os.path.dirname(__file__), "site.db"))
 
 # This is the db file that ships with your code (initial seed)
 SEED_DB = os.path.join(os.path.dirname(__file__), "site.db")
@@ -1179,6 +1179,7 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
 
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
