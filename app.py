@@ -28,8 +28,8 @@ PFP_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
 MAX_UPLOAD_MB = 5
 
-MOUNT = os.getenv("/LetterboxdDCI/seed/site.db")
-VOLUME_DB = os.path.join(MOUNT, "/seed/site.db") if MOUNT else None
+MOUNT = os.getenv("/LetterboxdDCI/seed/site.sql")
+VOLUME_DB = os.path.join(MOUNT, "/seed/site.sql") if MOUNT else None
 
 # This is the db file that ships with your code (initial seed)
 SEED_DB = os.path.join(os.path.dirname(__file__), "site.db")
@@ -1179,5 +1179,6 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
 
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
